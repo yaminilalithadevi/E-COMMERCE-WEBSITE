@@ -12,6 +12,7 @@ function RegistrationForm () {
  const[username,setName]=useState()
  const[email,setEmail]=useState()
  const[password,setPassword]=useState()
+ const[userType,setUserType]=useState()
  
   const navigate=useNavigate()
      console.log(username,email,password)
@@ -46,9 +47,50 @@ useEffect(()=>{
   return (
     <div className='container1'>
     <h2>Register Here</h2>
+
+    <div className='radiobutton'>
+      Register as
+      <div className='radiobutton2'>
+      <input 
+      type="radio"
+      name="UserType"
+       value="User"
+       onChange={(e) => setUserType(e.target.value)}
+       />{' '} User
+       </div>
+
+       <div className='radiobutton3'>
+       < input
+         type="radio"
+         name="UserType"
+          value="User"
+          onChange={(e) => setUserType(e.target.value)}
+           />{' '} Admin
+
+</div> 
+         </div>
+
+    
     <div className='container2'>
     <form >
+
+    <div className='labelname'>
+    <label>
+   Secret Key    
+  <input
+    type="text"
+    name="userName"  required  placeholder='Secret Key'
+    value={username}
+    onChange={(e) => setName(e.target.value)}
+  />
+</label>
+</div>
+<br />
+
       <div className='labelname'>
+
+        
+      
       <label>
         User Name <span style={{ color: 'red' }}>*</span>   
         <input
@@ -72,6 +114,7 @@ useEffect(()=>{
       </label>
       <br />
 
+      
       <label>
         Password  <span style={{ color: 'red' }}>*</span>
         <input
