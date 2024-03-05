@@ -77,4 +77,16 @@ a{
   color: white;
 }
 
+div.radiobutton{
+ 
+ display: inline-flex;
+ color: aliceblue;
+ margin-bottom: 20px;
+}
+
+div.radiobutton2 ,div.radiobutton3{
+  margin-left: 20px;
+  display: flex;
+}
+
  
