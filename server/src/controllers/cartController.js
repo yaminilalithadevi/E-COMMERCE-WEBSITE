@@ -9,7 +9,7 @@ const addToCart = async (req, res) => {
     const user = await userModel.findById(user_id);
     const product = await productModel.findById(product_id);
     if (!product) {
-      return res.status(404).json({ message: "User or product not found" });
+      return res.status(404).json({ message: "User or product not found in database" });
     }
 
     // Check if the cart item already exists
