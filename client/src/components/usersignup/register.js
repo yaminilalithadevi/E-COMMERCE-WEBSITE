@@ -13,24 +13,29 @@ function RegistrationForm () {
  const[email,setEmail]=useState()
  const[password,setPassword]=useState()
  const[userType,setUserType]=useState()
+ const[secretKey,setSecretKey]=useState()
  
   const navigate=useNavigate()
-     console.log(username,email,password)
+     
 
-useEffect(()=>{
+   useEffect(()=>{
   const auth =localStorage.getItem('user')
   if(auth){
     navigate('/home')
   }
-})
+  })
 
  const handleSubmit=(e)=>{
-   e.preventDefault()
+  if(userType == 'Admin' && secretKey !='SravaniYamini'){
+    e.preventDefault()
+    alert('Invalid Admin !!')
+    } else{
+      e.preventDefault()
    if (!username || !email || !password) {
     alert('All fields are required.');
     return;
    }
-   axios.post('http://localhost:3001/user/',{username,email,password})
+   axios.post('http://localhost:3001/user/',{username,email,password,userType})
      .then(result=>{console.log(result)
 
       //localStorage.setItem("user",JSON.stringify(result.data))
@@ -41,6 +46,9 @@ useEffect(()=>{
    })
       .catch(err=>console.log(err))
   }
+
+    }
+   
 
 
 
@@ -56,42 +64,38 @@ useEffect(()=>{
       name="UserType"
        value="User"
        onChange={(e) => setUserType(e.target.value)}
-       />{' '} User
+       /> User
        </div>
 
        <div className='radiobutton3'>
        < input
          type="radio"
          name="UserType"
-          value="User"
+          value="Admin"
           onChange={(e) => setUserType(e.target.value)}
-           />{' '} Admin
-
-</div> 
-         </div>
-
+           /> Admin
+                   </div>
+                   </div>
+       {userType == 'Admin' ? <div className='labelname'>
+    <label>
+    Secret Key    
+    <input  style={{marginRight:"30px"}}
+    type="text"
+    name="userName"  required  placeholder='Secret Key'
+    value={secretKey}
+    onChange={(e) => setSecretKey(e.target.value)}
+  />
+</label>
+</div> : null }
     
     <div className='container2'>
     <form >
 
-    <div className='labelname'>
-    <label>
-   Secret Key    
-  <input
-    type="text"
-    name="userName"  required  placeholder='Secret Key'
-    value={username}
-    onChange={(e) => setName(e.target.value)}
-  />
-</label>
-</div>
+   
 <br />
 
       <div className='labelname'>
-
-        
-      
-      <label>
+        <label>
         User Name <span style={{ color: 'red' }}>*</span>   
         <input
           type="text"
