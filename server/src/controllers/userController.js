@@ -48,13 +48,14 @@ const login = async (req, res) => {
             username: user.username,
             email: user.email,
             id: user.id,
+            userType:user.userType,
           },
         },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: "30m" }
       );
 
-      res.status(200).json(accessToken);
+      res.status(200).json({accessToken,user});
     } else {
       return res.status(401).json({ message: "Invalid password" });
     }

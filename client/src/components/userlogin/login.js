@@ -12,9 +12,7 @@ function Login(){
 
   useEffect(()=>{
     const auth =localStorage.getItem('user')
-    if(auth){
-      navigate('/home')
-    }
+   
 
   },[])
 
@@ -31,9 +29,16 @@ const handleSubmit=(e)=>{
       axios.post('http://localhost:3001/user/login',{email,password})
         .then(result=>{console.log(result)
   
-          localStorage.setItem("user",JSON.stringify(result))
-           navigate('/home')
-           console.log("sucess")
+          localStorage.setItem("user",JSON.stringify(result.data.user.userType))
+          //localStorage.setItem("admin",JSON.stringify(result.data.user.userType))
+          if(result.data.user.userType =="Admin"){
+            navigate('/add')
+
+          }else{
+            navigate('/home')
+          }
+          
+           
 
   })
   .catch((err) => {
