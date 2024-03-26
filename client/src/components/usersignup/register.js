@@ -35,6 +35,7 @@ function RegistrationForm () {
     alert('All fields are required.');
     return;
    }
+   
    axios.post('http://localhost:3001/user/',{username,email,password,userType})
      .then(result=>{console.log(result)
 
