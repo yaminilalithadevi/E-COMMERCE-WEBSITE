@@ -18,18 +18,20 @@ function App() {
  <Nav/>
  
  <Routes>
-
+ <Route path='/' element={<Home/>}> </Route> 
  <Route element={<PrivateComponent/>}>
+
+  
  <Route path='/' element={<RegistrationForm/>}> </Route>    
   <Route path='/home' element={<Home/>}> </Route>  
   <Route path='/add' element={<Addproducts/>}> </Route>  
   <Route path='/add/update/:id' element={<UpdateProduct/>}> </Route>  
-  <Route path='/logout' element={<RegistrationForm/>}> </Route>  
+  <Route path='/logout' element={<Home/>}> </Route>  
   <Route path='/profile' element={<h1>Profile Component</h1>}> </Route>  
   <Route  path='/home/product/:id' element={<ProductDisplay/>} ></Route>
-  <Route path='/cart' element={<Cart/>} > </Route>
-  {/* <Route  path='/register/login' element ={<Login/>}>  </Route> */}
-   </Route>
+  <Route path='/cart/:id' element={<Cart/>} > </Route>
+  <Route  path='/register/login' element ={<Login/>}>  </Route> 
+    </Route>
 
    
    <Route  path='/login' element ={<Login/>}>  </Route>

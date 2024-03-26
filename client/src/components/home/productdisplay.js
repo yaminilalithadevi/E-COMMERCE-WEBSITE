@@ -5,6 +5,9 @@ import { useParams } from 'react-router-dom';
 import {Link} from 'react-router-dom';
 //import Cart from '../cart/Cart';
 import './home.css'
+// index.js or App.js
+
+
 
 function ProductDisplay( ) { // Assuming id is a prop passed to this component
     const [name, setProductName] = useState('');

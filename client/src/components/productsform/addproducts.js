@@ -81,9 +81,12 @@ function CreateProducts() {
   
   
    return (
-    
+
+   
     <div className='containers'>
-      
+       <button style={{ width: "200px", marginLeft:"80%" }} type="button" class="btn btn-primary">Create Product</button>
+
+    
       <div className='innercontainer'>
       <h2>Create Product</h2>
       <form onSubmit={handleCreateProduct} >
