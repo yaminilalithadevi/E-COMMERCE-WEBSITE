@@ -1,90 +1,199 @@
-import React, { useState ,useEffect} from 'react';
-import axios from 'axios';
-import './addproducts.css';
-import {Link} from 'react-router-dom'
-
+// CreateProducts.js
+ import React, { useState , useEffect} from 'react';
+ import axios from 'axios';
+ import './addproducts.css';
+import { Link } from 'react-router-dom';
+import CreateProductPopup from './CreateProductPopup';
 
 function CreateProducts() {
-  const [name, setProductName] = useState('');
-  const [cost, setProductCost] = useState('');
-  const [warranty, setProductWarranty] = useState('');
-  const[description,setProductDescription]=useState('');
-  const[rating,setProductRating]=useState('')
-  const [errorMessage, setErrorMessage] = useState('');
+  const [products, setProducts] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
 
-  const[file,setFile]=useState()
-  const[products,setProducts]= useState([])
+  useEffect(() => {
+    axios.get('http://localhost:3001/product/') 
+      .then(response => setProducts(response.data))
+      .catch(err => console.log(err));
+  }, []);
 
-
-  const handleCreateProduct = async (e) => {
-    e.preventDefault();
-
+  const handleCreateProduct = async (formData) => {
     try {
-      const formData = new FormData();
-      formData.append('name', name);
-      formData.append('cost', cost);
-      formData.append('warranty', warranty);
-      formData.append('description', description);
-      formData.append('rating', rating);
-      formData.append('image', file);
-      
-      console.log("formData",formData)
-
-      const response = await axios.post('http://localhost:3001/product/create', formData,{ headers: {"Content-Type":"multipart/form-data"},});
-
+      const response = await axios.post('http://localhost:3001/product/create', formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+      });
       if (response.status === 201) {
         alert('You Have Successfully Added Product');
-        setProductName('');
-        setProductCost('');
-        setProductWarranty('');
-        setProductDescription('');
-        setProductRating('');
-        setFile(null);
-        setErrorMessage('');
+        setProducts([...products, response.data]);
       } else {
         console.error('Error creating product:', response.data);
-        setErrorMessage('Unexpected error creating product. Please try again.');
       }
     } catch (err) {
       console.error('Error creating product:', err);
-      setErrorMessage('Unexpected error creating product. Please try again.');
     }
   };
 
-  
-   useEffect(() => {
- 
-      axios.get('http://localhost:3001/product/') 
-      .then(products=> setProducts(products.data))
-      .catch(err=> console.log(err))
- 
-   }, [products]);
-
-  
-  
-
-  //delete products
-   const handleDelete = async (id) => {
-    console.log(id)
-    
+  const handleDelete = async (id) => {
     const shouldDelete = window.confirm('Are you sure you want to delete this product?');
-      if (!shouldDelete) {
+    if (!shouldDelete) {
       return;
     }
     try {
       await axios.delete(`http://localhost:3001/product/${id}`);
-      } catch (error) {
+      setProducts(products.filter(product => product._id !== id));
+    } catch (error) {
       console.error('Error deleting product:', error);
     }
   };
 
+  return (
+    <div className='containers'>
+      <button style={{ width: "200px", marginLeft:"80%" }}     onClick={() => setShowPopup(true)} className="btn btn-primary">Create Product</button>
+      {showPopup && <CreateProductPopup handleClose={() => setShowPopup(false)} handleCreateProduct={handleCreateProduct} />}
+      {/* Rest of the code */}
+
+
+
+      <div className="secondcontainer">
+      
+      <h2>Product List</h2>
+     <table className="product-table">
+       <thead>
+         <tr>
+           <th>Sr No</th>
+           <th>Name</th>
+           <th>Cost</th>
+           <th>Warranty</th>
+           <th>Description</th>
+           <th>Rating</th>
+           <th>Operation</th>
+         </tr>
+       </thead>
+       <tbody>
+         {products.map((product,index) => (
+           <tr key={product._id}>
+             <td>{index + 1}</td> 
+             <td>{product.name}</td>
+             <td>{product.cost}</td>
+             <td>{product.warranty}</td>
+             <td>{product.description}</td>
+             <td>{product.rating}</td>
+             <td>
+               <button className='delete-button' onClick={() => handleDelete(product._id)}>Delete</button>
+               
+                 <Link to={"update/"+product._id}>Edit</Link>
+             </td>
+           </tr>
+         ))}
+       </tbody>
+     </table>
+ </div> 
+
+
+
+    </div>
+  );
+}
+
+export default CreateProducts;
+
+
+
+
+
+
+
+
+
+
+
+
+// import React, { useState ,useEffect} from 'react';
+// import axios from 'axios';
+// import './addproducts.css';
+// import {Link} from 'react-router-dom'
+
+
+// function CreateProducts() {
+//   const [name, setProductName] = useState('');
+//   const [cost, setProductCost] = useState('');
+//   const [warranty, setProductWarranty] = useState('');
+//   const[description,setProductDescription]=useState('');
+//   const[rating,setProductRating]=useState('')
+//   const [errorMessage, setErrorMessage] = useState('');
+
+//   const[file,setFile]=useState()
+//   const[products,setProducts]= useState([])
+
+
+//   const handleCreateProduct = async (e) => {
+//     e.preventDefault();
+
+//     try {
+//       const formData = new FormData();
+//       formData.append('name', name);
+//       formData.append('cost', cost);
+//       formData.append('warranty', warranty);
+//       formData.append('description', description);
+//       formData.append('rating', rating);
+//       formData.append('image', file);
+      
+//       console.log("formData",formData)
+
+//       const response = await axios.post('http://localhost:3001/product/create', formData,{ headers: {"Content-Type":"multipart/form-data"},});
+
+//       if (response.status === 201) {
+//         alert('You Have Successfully Added Product');
+//         setProductName('');
+//         setProductCost('');
+//         setProductWarranty('');
+//         setProductDescription('');
+//         setProductRating('');
+//         setFile(null);
+//         setErrorMessage('');
+//       } else {
+//         console.error('Error creating product:', response.data);
+//         setErrorMessage('Unexpected error creating product. Please try again.');
+//       }
+//     } catch (err) {
+//       console.error('Error creating product:', err);
+//       setErrorMessage('Unexpected error creating product. Please try again.');
+//     }
+//   };
+
+  
+//    useEffect(() => {
+ 
+//       axios.get('http://localhost:3001/product/') 
+//       .then(products=> setProducts(products.data))
+//       .catch(err=> console.log(err))
+ 
+//    }, [products]);
+
   
   
-   return (
+
+//   //delete products
+//    const handleDelete = async (id) => {
+//     console.log(id)
+    
+//     const shouldDelete = window.confirm('Are you sure you want to delete this product?');
+//       if (!shouldDelete) {
+//       return;
+//     }
+//     try {
+//       await axios.delete(`http://localhost:3001/product/${id}`);
+//       } catch (error) {
+//       console.error('Error deleting product:', error);
+//     }
+//   };
+
+  
+  
+//    return (
 
    
-    <div className='containers'>
-       <button style={{ width: "200px", marginLeft:"80%" }} type="button" class="btn btn-primary">Create Product</button>
+
+
+       {/* <button style={{ width: "200px", marginLeft:"80%" }} type="button" class="btn btn-primary">Create Product</button>
 
     
       <div className='innercontainer'>
@@ -99,10 +208,10 @@ function CreateProducts() {
        
         <label>Warranty   <span style={{ color: 'red' }}>*</span>
           <input type="text" placeholder='enter warranty' required value={warranty} onChange={(e) => setProductWarranty(e.target.value)} /></label>
-        
+         */}
         {/* <label>Description <input type="text"  placeholder='enter description' required value={description} onChange={(e) => setProductDescription(e.target.value)} /></label> */}
         
-        <label> Description
+        {/* <label> Description
           <textarea  id="textarea" name="textarea" rows="4" cols="50" placeholder='enter description' required value={description} onChange={(e) => setProductDescription(e.target.value)}> </textarea>
              </label>
         
@@ -140,7 +249,7 @@ function CreateProducts() {
         <tbody>
           {products.map((product,index) => (
             <tr key={product._id}>
-              <td>{index + 1}</td> {/* Serial number */}
+              <td>{index + 1}</td> 
               <td>{product.name}</td>
               <td>{product.cost}</td>
               <td>{product.warranty}</td>
@@ -155,20 +264,21 @@ function CreateProducts() {
           ))}
         </tbody>
       </table>
-  </div>
+  </div> */}
+
 
 
     
-</div>
+// </div>
 
 
 
 
-  );
-}
+//   );
+// }
 
 
-export default CreateProducts;
+// export default CreateProducts;
 
 
 

@@ -1,23 +1,62 @@
-import React from "react"
-// index.js or App.js
-//import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useState, useEffect } from "react";
+import { useCart } from '../CartContext';
 
+function Cart( ) {
+  const { cartItems, addToCart, updateCartItems } = useCart(); // Use addToCart and updateCartItems from context
+console.log("cart itemssss",cartItems)
 
-const Cart=()=>{
+  useEffect(() => {
+    fetchCartItems();
+  }, []);
 
+  const fetchCartItems = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/cart');
+      if (response.ok) {
+        const data = await response.json();
+        updateCartItems(data); // Update cart items in context
+      } else {
+        console.error('Failed to fetch cart items');
+      }
+    } catch (error) {
+      console.error('Error fetching cart items:', error);
+    }
+  };
 
-    return(
+  const handleAddToCart = async (productId) => {
+    try {
+      const response = await fetch(`http://localhost:3001/cart/addToCart/${productId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        fetchCartItems(); // Refresh cart items after adding a new product
+      } else {
+        console.error('Failed to add product to cart');
+      }
+    } catch (error) {
+      console.error('Error adding product to cart:', error);
+    }
+  };
 
-        <div>
- 
- <div style={{ display: "inline-block" ,marginLeft: "500px",marginTop:"100px"}}>
-    <h1>Cart is Empty, add products</h1>
-  <button style={{ width: "200px", textAlign: "center",marginLeft:"80px"  }} type="button" className="btn btn-primary">Primary</button>
-</div>
-
-
-        </div>
-    )
+  return (
+    <div>
+      <h1>This is Cart</h1>
+      <ul>
+        {cartItems.map(item => (
+          <li key={item._id}>
+            Product Name: {item.product.name}, Quantity: {item.quantity}
+          </li>
+        ))}
+      </ul>
+      {/* Example button to add a product to the cart */}
+      <button onClick={() => handleAddToCart()}>
+        Add Product to Cart
+      </button>
+    </div>
+  );
 }
 
 export default Cart;

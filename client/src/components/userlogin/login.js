@@ -29,16 +29,11 @@ const handleSubmit=(e)=>{
       axios.post('http://localhost:3001/user/login',{email,password})
         .then(result=>{console.log(result)
   
-          // localStorage.setItem("user",JSON.stringify(result.data.user.userType))
-          // //localStorage.setItem("admin",JSON.stringify(result.data.user.userType))
-          // if(result.data.user.userType =="Admin"){
-          //   navigate('/add')
+          localStorage.setItem("UserDetails",JSON.stringify(result.data.user))
 
-          // }else{
-          //   navigate('/home')
-          // }
           const userType = result.data.user.userType;
           localStorage.setItem("user", userType);
+          
           
           if (userType === "Admin") {
             navigate('/add');

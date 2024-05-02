@@ -25,7 +25,7 @@ const AdminNav = () => {
 </svg> </Link>
       </li>
       <li>
-        <Link onClick={logout} to="/home">
+        <Link onClick={logout} to="/">
           Logout
         </Link>
       </li>

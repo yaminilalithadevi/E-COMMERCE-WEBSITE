@@ -25,7 +25,6 @@ app.use("/category",categoryRouter)
 
 const PORT = 3001;
 
-// const url = "mongodb://127.0.0.1:27017/mydb";
 
 const url="mongodb://localhost:27017/mydb";
 

@@ -1,24 +1,4 @@
 
-/* 
-
-
-.nav-ul li{
-  display: inline-block;
-  padding: 10px;
- 
-
-}
-
-.nav-ul li a{
-  text-decoration: none;
-  color: azure;
-  padding: 5;
-  float: inline-end;
-}
-.nav-ul{
-  padding: 5px;
-  background-color: rgb(40, 40, 41);
-  } */
 
   * { 
     margin: 0; 
@@ -56,4 +36,49 @@
   
 .nav-ul :hover{
   background-color: #313030;
+}
+
+
+
+
+
+
+.quantity-container {
+  display: flex;
+  align-items: start;
+  
+}
+
+.container2{
+  padding: 10px;
+  margin-top: 20px;
+}
+
+.quantity-btn {
+  padding:5px 10px;
+  font-size: 1rem;
+  width:50px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+ 
+}
+
+.quantity {
+  margin: 0 10px;
+  font-size: 1.2rem;
+}
+
+.add-to-cart-btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #007bff;
+ width: 200px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-to-cart-btn:hover {
+  background-color: #0056b3;
 }
